@@ -1,4 +1,3 @@
-import React from "react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { Heading, Text, Strong } from "@radix-ui/themes";
@@ -8,8 +7,6 @@ export default async function Dashboard() {
   if (!session) {
     redirect("/");
   }
-
-  console.log(session);
 
   return (
     <>

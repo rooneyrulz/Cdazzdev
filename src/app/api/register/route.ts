@@ -20,7 +20,7 @@ export const POST = async (request: NextRequest) => {
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser) {
-      return NextResponse.json("User already exists", { status: 400 });
+      return NextResponse.json("User already exists!", { status: 400 });
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
@@ -33,9 +33,9 @@ export const POST = async (request: NextRequest) => {
 
     await newUser.save();
 
-    return NextResponse.json("User registered successfully", { status: 200 });
+    return NextResponse.json("User registered successfully!", { status: 200 });
   } catch (error) {
     console.error("Error in user registration:", error);
-    return NextResponse.json("Internal Server Error", { status: 500 });
+    return NextResponse.json("Internal Server Error!", { status: 500 });
   }
 };

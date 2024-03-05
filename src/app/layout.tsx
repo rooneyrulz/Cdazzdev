@@ -5,7 +5,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Theme, Container } from "@radix-ui/themes";
-import NavBar from "./NavBar";
+import NavBar from "./navbar/NavBar";
 import AuthProvider from "./AuthProvider";
 import { getServerSession } from "next-auth";
 
@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
-        <AuthProvider>
+        <AuthProvider session={session}>
           <Theme appearance="light" accentColor="violet">
             <Container>
               <NavBar />

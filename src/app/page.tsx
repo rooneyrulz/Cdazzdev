@@ -1,4 +1,4 @@
-import { Button, Heading, Text, Em, Strong, Container } from "@radix-ui/themes";
+import { Heading, Text, Strong } from "@radix-ui/themes";
 
 export default function HomePage() {
   return (

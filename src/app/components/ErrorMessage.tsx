@@ -1,10 +1,18 @@
-import { Text } from "@radix-ui/themes";
-import React, { PropsWithChildren } from "react";
+import { Callout, Text } from "@radix-ui/themes";
 
-const ErrorMessage = ({ children }: PropsWithChildren) => {
+type ErrorMessageType = {
+  children: React.ReactNode;
+  scope?: string;
+};
+
+const ErrorMessage = ({ children, scope = "client" }: ErrorMessageType) => {
   if (!children) return null;
 
-  return (
+  return scope === "server" ? (
+    <Callout.Root color="red" className="mb-5">
+      <Callout.Text>{children}</Callout.Text>
+    </Callout.Root>
+  ) : (
     <Text color="red" as="p">
       {children}
     </Text>
