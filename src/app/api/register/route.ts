@@ -2,20 +2,7 @@ import { NextResponse, NextRequest } from "next/server";
 import connect from "@/config/db";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
-import { z } from "zod";
-
-const validationSchema = z.object({
-  username: z
-    .string()
-    .min(1, { message: "Username must not be empty!" })
-    .max(255, {
-      message: "Username must not be more than 255 characters long!",
-    }),
-  email: z.string().email({ message: "Invalid email id!" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long!" }),
-});
+import { validationSchema } from "../../validationSchema";
 
 export const POST = async (request: NextRequest) => {
   try {
