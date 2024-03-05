@@ -1,3 +1,4 @@
+import "react-toastify/dist/ReactToastify.css";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import "./globals.css";
@@ -5,9 +6,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Theme, Container } from "@radix-ui/themes";
+import { getServerSession } from "next-auth";
+import { ToastContainer } from "react-toastify";
+
 import NavBar from "./navbar/NavBar";
 import AuthProvider from "./AuthProvider";
-import { getServerSession } from "next-auth";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -31,6 +34,7 @@ export default async function RootLayout({
             <Container>
               <NavBar />
               <main className="p-5">{children}</main>
+              <ToastContainer />
             </Container>
           </Theme>
         </AuthProvider>

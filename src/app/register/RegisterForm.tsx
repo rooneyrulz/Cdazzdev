@@ -7,6 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 import ErrorMessage from "../components/ErrorMessage";
 import { registrationSchema } from "../validationSchema";
@@ -40,6 +41,7 @@ export default function RegisterForm() {
       if (res.status === 200) {
         setError("");
         router.push("/login");
+        toast.success("You just registered, Let's login!");
       }
     } catch (error: any) {
       setError(error?.response?.data || "Something went wrong");

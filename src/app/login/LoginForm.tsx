@@ -7,6 +7,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { toast } from "react-toastify";
 
 import { loginSchema } from "../validationSchema";
 import ErrorMessage from "../components/ErrorMessage";
@@ -49,6 +50,7 @@ export default function LoginForm() {
       if (res?.status === 200) {
         setError("");
         router.push("/profile");
+        toast.success("Login logged in! 😀");
       }
     } catch (error: any) {
       setError(error?.response?.data?.error || "Something went wrong");
