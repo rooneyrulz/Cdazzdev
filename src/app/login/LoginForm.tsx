@@ -50,7 +50,7 @@ export default function LoginForm() {
       if (res?.status === 200) {
         setError("");
         router.push("/profile");
-        toast.success("Login logged in! 😀");
+        toast.success("Cool, Login successful! 😀");
       }
     } catch (error: any) {
       setError(error?.response?.data?.error || "Something went wrong");

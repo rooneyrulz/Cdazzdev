@@ -12,13 +12,12 @@ type LoginForm = z.infer<typeof loginSchema>;
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      id: "credentials",
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: LoginForm) {
+      async authorize(credentials: LoginForm): Promise<any> {
         await connect();
         try {
           const user = await User.findOne({ email: credentials.email });
@@ -27,10 +26,9 @@ export const authOptions: NextAuthOptions = {
             throw new Error("Invalid credentials!");
           }
 
-          const isMatch = await bcrypt.compare(
-            credentials.password,
-            user.password
-          );
+          const isMatch =
+            user.password &&
+            (await bcrypt.compare(credentials.password, user.password));
 
           if (!isMatch) {
             throw new Error("Invalid credentials!");
