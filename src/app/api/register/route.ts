@@ -2,15 +2,15 @@ import { NextResponse, NextRequest } from "next/server";
 import connect from "@/config/db";
 import bcrypt from "bcryptjs";
 import User from "@/models/User";
-import { validationSchema } from "../../validationSchema";
+import { registrationSchema } from "../../validationSchema";
 
 export const POST = async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const validation = validationSchema.safeParse(body);
+    const validation = registrationSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json(validation.error.errors, { status: 400 });
+      return NextResponse.json(validation.error.format(), { status: 400 });
     }
 
     await connect();

@@ -1,7 +1,14 @@
-import {Button} from "@radix-ui/themes"
+import { Button, Heading, Text, Em, Strong, Container } from "@radix-ui/themes";
 
 export default function HomePage() {
   return (
-    <Button>Click Here!</Button>
+    <>
+      <Heading mb="2" size="8">
+        Next14
+      </Heading>
+      <Text>
+        <Strong>Security</Strong> is everything.
+      </Text>
+    </>
   );
 }

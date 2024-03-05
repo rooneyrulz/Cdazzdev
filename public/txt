@@ -1,0 +1,13 @@
+ const privateLinks = [
+    { label: "Profile", href: "/profile", private: true },
+    { label: "Logout", href: "", private: true, onClick: () => signOut() },
+  ];
+
+  const publicLinks = [
+    { label: "Register", href: "/register", private: false },
+    { label: "Login", href: "/login", private: false, icon: <FaArrowRight /> },
+  ];
+
+  const commonLinks = [
+    { label: "Home", href: "/" },
+  ]

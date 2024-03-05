@@ -1,45 +1,39 @@
 "use client";
 
 import React from "react";
-import {
-  TextField,
-  Button,
-  Callout,
-  Text,
-  Heading,
-  Link,
-} from "@radix-ui/themes";
+import { TextField, Button, Callout, Text, Heading, Link } from "@radix-ui/themes";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registrationSchema } from "../validationSchema";
+import { loginSchema } from "../validationSchema";
 import ErrorMessage from "../components/ErrorMessage";
 import Spinner from "../components/Spinner";
-import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
-type RegisterForm = z.infer<typeof registrationSchema>;
+type LoginForm = z.infer<typeof loginSchema>;
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterForm>({
-    resolver: zodResolver(registrationSchema),
+  } = useForm<LoginForm>({
+    resolver: zodResolver(loginSchema),
   });
   const [error, setError] = React.useState("");
   const [isSubmitting, setSubmitting] = React.useState(false);
   const router = useRouter();
-
   const { data: session, status: sessionStatus } = useSession();
 
   React.useEffect(() => {
     if (sessionStatus === "authenticated") {
       router.replace("/profile");
     }
-  }, [router, sessionStatus]);
+  }, [sessionStatus, router]);
+
+  console.log("session"+ session);
+  console.log("session" + sessionStatus);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -47,21 +41,29 @@ export default function RegisterPage() {
     }, 3000);
   }, [error]);
 
-  const handleRegistration = async (data: RegisterForm) => {
+  const handleRegistration = async (data: LoginForm) => {
     setSubmitting(true);
 
-    console.log(data);
-
     try {
-      const res = await axios.post("/api/register", data);
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+      });
+
       console.log(res);
-      if (res.status === 200) {
+
+      if (res?.status !== 200) {
+        setError(res?.error || "Something went wrong");
+      }
+
+      if (res?.status === 200) {
         setError("");
-        router.push("/login");
+        router.push("/profile");
       }
     } catch (error: any) {
-      setError(error?.response?.data || "Something went wrong");
-      console.log(error?.response?.data);
+      setError(error?.response?.data?.error || "Something went wrong");
+      console.log("error:" + error);
     } finally {
       setSubmitting(false);
     }
@@ -74,7 +76,7 @@ export default function RegisterPage() {
   return (
     <div className="max-w-xl m-auto">
       <Heading mb="5" size="6">
-        Register
+        Login
       </Heading>
       {error && (
         <Callout.Root color="red" className="mb-5">
@@ -85,15 +87,6 @@ export default function RegisterPage() {
         className="space-y-3"
         onSubmit={handleSubmit(async (data) => handleRegistration(data))}
       >
-        <TextField.Root>
-          <TextField.Input
-            size="3"
-            placeholder="Username"
-            {...register("username")}
-          />
-        </TextField.Root>
-        <ErrorMessage>{errors.username?.message}</ErrorMessage>
-
         <TextField.Root>
           <TextField.Input
             size="3"
@@ -114,13 +107,13 @@ export default function RegisterPage() {
 
         <Button size="3" disabled={isSubmitting}>
           {isSubmitting && <Spinner />}
-          Register
+          Login
         </Button>
       </form>
 
       <Text align="center" as="p" mt="5" color="gray">
-        Already have an account? Let's login {" "}
-        <Link className="text-blue-500 hover:underline " href="/login">here</Link>
+        Don't have account?  register {" "}
+        <Link className="text-blue-500 hover:underline " href="/register">here</Link>
       </Text>
     </div>
   );
