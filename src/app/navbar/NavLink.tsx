@@ -35,18 +35,18 @@ export default function NavLink() {
   ];
 
   return (
-    sessionStatus !== "loading" && (
-      <div className="flex space-x-6 w-[100%]">
-        <ul className="flex space-x-6 mr-auto">
-          <Link
-            href="/"
-            className={`${
-              currentPath === "/" ? "text-zinc-900" : "text-zinc-500"
-            } hover:text-zinc-800 transition-colors`}
-          >
-            Home
-          </Link>
-        </ul>
+    <div className="flex space-x-6 w-[100%]">
+      <ul className="flex space-x-6 mr-auto">
+        <Link
+          href="/"
+          className={`${
+            currentPath === "/" ? "text-zinc-900" : "text-zinc-500"
+          } hover:text-zinc-800 transition-colors`}
+        >
+          Home
+        </Link>
+      </ul>
+      {sessionStatus !== "loading" && (
         <ul className="flex space-x-6">
           {links.map((link) => (
             <Link
@@ -63,7 +63,7 @@ export default function NavLink() {
             </Link>
           ))}
         </ul>
-      </div>
-    )
+      )}
+    </div>
   );
 }
